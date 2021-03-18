@@ -13,12 +13,12 @@ def detect_labels(bucket):
     #---------------------------------------------
     #Get the list of images in bucket
     #---------------------------------------------
-    imageList=[]
+    photoList=[]
     for obj in bucket.objects.all():
-        imageList.append(obj.key)
+        photoList.append(obj.key)
     i=1
-    for image in imageList:
-        print(i,' ',image)
+    for photo in photoList:
+        print(i,' ',photo)
         i+=1
 
     #----------------------------------------------
@@ -28,16 +28,16 @@ def detect_labels(bucket):
     s3 = boto3.client('s3')
 
     #analyse the first image appears on the list
-    image_analyse = imageList[0] 
+    photo_analyse = photoList[0] 
 
     #Get labels that only have more than 80% confidence
-    response = rekog.detect_labels(Image = {'S3Object' : {'Bucket': bucket_name, 'Name': image_analyse}},MinConfidence=80)
+    response = rekog.detect_labels(Image = {'S3Object' : {'Bucket': bucket_name, 'Name': photo_analyse}},MaxLabels=3,MinConfidence=80)
 
     #keep labels in dictionary
     result={}
     for labels in response['Labels']:
         result.update({labels['Name']:round(labels['Confidence'],2)})
-    print('Detected labels for ', image_analyse, result)
+    print('Detected labels for ', photo_analyse, result)
 
     return result
 
