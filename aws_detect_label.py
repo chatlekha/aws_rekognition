@@ -13,12 +13,11 @@ def detect_labels(bucket):
     #---------------------------------------------
     #Get the list of images in bucket
     #---------------------------------------------
-    photoList=[]
-    for obj in bucket.objects.all():
-        photoList.append(obj.key)
+    photoList = [obj.key for obj in bucket.objects.all()]
+    
     i=1
     for photo in photoList:
-        print(i,' ',photo)
+        print(i,photo)
         i+=1
 
     #----------------------------------------------
